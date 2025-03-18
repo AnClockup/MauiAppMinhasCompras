@@ -7,10 +7,10 @@ namespace MauiAppMinhasCompras.Helpers
     public class SQLiteDatabaseHelper
     {
         readonly SQLiteAsyncConnection _conn;
-        public class SQLiteDatabaseHelper(string path)
+        public  SQLiteDatabaseHelper(string path)
         {
             _conn = new SQLiteAsyncConnection(path);
-            _conn.CreateTableAsync<produto>().Wait();
+            _conn.CreateTableAsync<Produto>().Wait();
         }
 
         public Task<int> Insert(Produto p) 
@@ -22,7 +22,8 @@ namespace MauiAppMinhasCompras.Helpers
         {
             string sql = "UPDATE Produto SET Descricao=?, Quantidade=?, Preco=? WHERE Id=?";
 
-            return _conn.QueryAsync<Produto>(sql, p.Descricao, p.Quantidade, p.Preco, p.Id);
+            return _conn.QueryAsync<Produto>(
+                sql, p.Descricao, p.Quantidade, p.Preco, p.Id);
         }
         public Task<int> Delete(int id)
         {
@@ -34,7 +35,7 @@ namespace MauiAppMinhasCompras.Helpers
         }
         public Task<List<Produto>> Search(String q) 
         {
-            string sql = "SELECT * Produto WHERE descricao LIKE '%" + q + "%'";
+            string sql = "SELECT * From Produto WHERE descricao LIKE '%" + q + "%'";
 
             return _conn.QueryAsync<Produto>(sql);
         }
